@@ -1,5 +1,6 @@
 import './globals.css'
-import Navigation from '@components/Navigation.jsx'
+import Navigation from '../components/Navigation'
+import React from 'react'
 
 export const metadata = {
   title: 'GLOBAL CITIZEN',

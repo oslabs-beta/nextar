@@ -1,4 +1,5 @@
 import styles from './country.module.css'
+import React from 'react'
 
 const getCountryDetails = async(code) => {
     const response = await fetch(`https://restcountries.com/v3.1/alpha/${code}`)
