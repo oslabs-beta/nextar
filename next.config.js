@@ -7,6 +7,9 @@ const nextConfig = {
     },
     env: {
       timezoneKey: '02f249b24b414f5388a66cbd0152c747'
+    },
+    experimental: {
+      instrumentationHook: true
     }
   };
   
