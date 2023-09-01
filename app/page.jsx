@@ -1,20 +1,32 @@
-import CountryCard from '@components/CountryCard'
-import styles from './page.module.css'
 
-const getCountries = async() => {
-  const response = await fetch('https://restcountries.com/v3.1/all');
-  const countries = await response.json();
-  return countries;
-}
 
-const HomePage = async() => {
-  const countries = await getCountries();
-  
+import CountryContainer from '@components/CountryContainer'
+// import styles from './page.module.css'
+import {onCLS, onFID, onLCP} from 'web-vitals';
+import {performance, PerformanceObserver} from 'perf_hooks';
+
+
+
+
+const HomePage = () => {
+
+  console.log('before po')
+  setTimeout(()=>{
+
+    const po = new PerformanceObserver((entryList) => {
+      entryList.getEntries()
+      
+      
+   }).observe({ type: "largest-contentful-paint", buffered: false })
+   console.log(po)
+   
+  //  po.observe({ type: "largest-contentful-paint", buffered: true });
+    
+  },5000)
+
   return (
-    <div className={styles.cardContainer}>
-      {countries.map((country, index) => (
-        <CountryCard key={index} details={country} />
-      ))}
+    <div>
+    <CountryContainer/>
     </div>
   )
 }
