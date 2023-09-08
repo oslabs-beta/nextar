@@ -1,47 +1,34 @@
 const express = require('express');
-const app = express();
-const fs = require('fs');
-const path = require('path');
-const cors = require('cors');
+const http = require('http');
+const WebSocket = require('ws');
 const PORT = 8000;
+
+const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({server:server})
+
 // const dashboardController = require('./controller')
-
-app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
-// post request from tracing
-app.post('/postTraceData', (req, res, next) => {
-    console.log('POSTING!', req.body)
-
-    fs.readFile(path.join(__dirname, '../models/data.json'), (err, data) => {
-      const json = JSON.parse(data)
-      json.push(req.body)
-      fs.writeFile(path.join(__dirname, '../models/data.json'), JSON.stringify(json), (err) => {
-        if(err) {
-          return next(err)
-        } else res.status(200).send('Successful!')
-      })
-    })
-    // fs.appendFile(path.join(__dirname,'../models/data.json'),JSON.stringify(req.body), (err) => {
-    //   if (err) {
-    //     return next(err)
-    //   } else res.status(200).send('Successful')
-    // })
+wss.on('connection', function connection(ws){
+  console.log('CONNECTED TO NEXTAR DASHBOARD!')
 })
 
-// get request from dashboard
-app.get('/traceData', (req, res, next) => {
-    console.log('GETTING')
-    res.sendFile(path.join(__dirname, '../models/data.json'), (err) => {
-      if(err) {
-        console.log(err)
-        return next(err)
-      }
-    })
+app.post('/postTraceData', (req, res) => {
+  const trace = req.body
+  console.log(trace)
+
+  wss.clients.forEach((client) => {
+    if(client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(trace))
+    }
+  })
+  res.status(200)
 })
 
 // global error handler
-app.use((err, req, res, next) => {
+app.use('/', (err, req, res, next) => {
     const defaultErr = {
       log: 'Express error handler caught unknown middleware error',
       status: 400,
@@ -53,7 +40,7 @@ app.use((err, req, res, next) => {
   });
 
 
-app.listen(PORT, function (err) {
+server.listen(PORT, function (err) {
     if (err) console.log(err);
     console.log("Server listening on PORT", PORT);
 });
