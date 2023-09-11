@@ -13,9 +13,9 @@ const Dashboard = () => {
   };
 
   socket.onmessage = (event) => {
-    const trace = JSON.stringify(event.data);
+    const trace = JSON.parse(event.data)
     console.log('here is the trace data', trace)
-    setData(trace);
+    setData(event.data);
   }
 
   return (
