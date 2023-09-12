@@ -5,8 +5,17 @@ import * as d3 from "d3";
 
 export default function CreateGraph(props) {
 
-  const [data] = useState(JSON.parse(localStorage.getItem('FCParray')));
+  // const [data, setData] = useState([]);
+
+  // useEffect(() => {
+  //   setData(JSON.parse(localStorage.getItem('FCParray')));
+  //   // Perform localStorage action
+  //   const item = localStorage.getItem('key')
+  // }, [])
+
   // const [data] = useState([25, 50, 35, 15, 99, 10]);
+  // const [data] = useState([287.9, 244.6, 274.5, 282.6, 176.3, 174.3, 990.5, 990.5, 749.9, 749.9, 772.5, 772.5, 226.3, 916.4])
+  const data = props.array;
   const svgRef = useRef();
 
 
@@ -29,10 +38,14 @@ export default function CreateGraph(props) {
 
 
   useEffect(() => {
-    // createGraph();
     // set up svg
-    const w = 400;
-    const h = 50;
+    const w = 1000;
+    const h = 100;
+
+    // const margin = { top: 40, right: 80, bottom: 60, left: 50 },
+    // width = 960 - margin.left - margin.right,
+    // height = 280 - margin.top - margin.bottom;
+
     const svg = d3.select(svgRef.current)
       .attr('width', w)
       .attr('height', h)
