@@ -5,9 +5,9 @@ import Link from 'next/link'
 import Pic from '../../public/next.svg'
 import Image from 'next/image'
 // import { useState, useEffect, useRef } from "react";
-import LineChart from '@components/LineChart'
+// import LineChart from '@components/LineChart'
 import CreateGraph from '@components/CreateGraph'
-import Webvitals from '@components/Web-Vitals'
+// import Webvitals from '@components/Web-Vitals'
 import { useEffect, useState } from 'react'
 
 export default function Nextar() {
@@ -169,8 +169,8 @@ export default function Nextar() {
     <main>
       <h1>Nextar Dashboard</h1>
       <p>{fcpArray}</p>
-      <p>{FCP75}</p>
-      <CreateGraph />
+      {/* <p>{FCP75}</p> */}
+      <CreateGraph array={fcpArray}/>
 
        
 
