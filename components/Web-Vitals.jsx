@@ -22,6 +22,7 @@ export function WebVitals() {
 
   useReportWebVitals((metric) => {
     //check if webvitals object exists in local storage, otherwise set to update {}
+    console.log(metric);
     if (!localStorage.getItem('nextar-web-vitals')) {
       localStorage.setItem('nextar-web-vitals', JSON.stringify({}));
     }
@@ -31,7 +32,14 @@ export function WebVitals() {
     const endpoint = location.pathname;
 
     if (!wvObj[endpoint]) {
-      wvObj[endpoint] = { fcp: [], lcp: [], cls: [], fid: [] };
+      wvObj[endpoint] = {
+        lcp: [],
+        cls: [],
+        fid: [],
+        fcp: [],
+        ttfb: [],
+        inp: [],
+      };
     }
 
     // console.log('METRIC', metric);
@@ -132,6 +140,56 @@ export function WebVitals() {
             JSON.stringify([
               ...(JSON.parse(localStorage.getItem('FIDarray')) || []),
               fidVal,
+            ])
+          );
+          setHasRan(true);
+        }
+        break;
+      }
+      case 'TTFB': {
+        // handle FID results
+        // console.log('FID', metric.value)
+        if (hasRan === false) {
+          const ttfbVal = Math.round(metric.value * 1e2) / 1e2;
+
+          //add metric to nextar-web-vitals local storage object
+          if (!wvObj[endpoint]) {
+            wvObj[endpoint] = {};
+            wvObj[endpoint].ttfb = [];
+          }
+          wvObj[endpoint].ttfb.push(ttfbVal);
+          localStorage.setItem('nextar-web-vitals', JSON.stringify(wvObj));
+
+          localStorage.setItem(
+            'TTFBarray',
+            JSON.stringify([
+              ...(JSON.parse(localStorage.getItem('TTFBarray')) || []),
+              ttfbVal,
+            ])
+          );
+          setHasRan(true);
+        }
+        break;
+      }
+      case 'INP': {
+        // handle FID results
+        // console.log('FID', metric.value)
+        if (hasRan === false) {
+          const inpVal = Math.round(metric.value * 1e2) / 1e2;
+
+          //add metric to nextar-web-vitals local storage object
+          if (!wvObj[endpoint]) {
+            wvObj[endpoint] = {};
+            wvObj[endpoint].inp = [];
+          }
+          wvObj[endpoint].inp.push(inpVal);
+          localStorage.setItem('nextar-web-vitals', JSON.stringify(wvObj));
+
+          localStorage.setItem(
+            'INParray',
+            JSON.stringify([
+              ...(JSON.parse(localStorage.getItem('INParray')) || []),
+              inpVal,
             ])
           );
           setHasRan(true);
