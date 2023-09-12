@@ -1,90 +1,111 @@
-"use client"
+'use client'
 
 import Link from 'next/link'
 // import {performance, PerformanceObserver} from 'perf_hooks';
 import Pic from '../../public/next.svg'
 import Image from 'next/image'
 // import { useState, useEffect, useRef } from "react";
-import LineChart from '@components/LineChart'
+// import LineChart from '@components/LineChart'
+import CreateGraph from '@components/CreateGraph'
+// import Webvitals from '@components/Web-Vitals'
+import { useEffect, useState } from 'react'
 
 export default function Nextar() {
 
-  // FCP CREATOR
-  const fcp = Math.round(JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).fcp.value)
-  console.log('test',fcp)
+  const [fcpArray, setFcpArray] = useState([]);
+  const [lcpArray, setLcpArray] = useState([]);
+  const [clsArray, setClsArray] = useState([]);
+  const [fidArray, setFidArray] = useState([]);
 
-  const fcpArray = JSON.parse(localStorage.getItem('FCParray'));
+  useEffect(() => {
+    // thoughts: combine these all as one big metric object with the different web vitals as keys
+    // add in the special next.js web vitals
+    setFcpArray(JSON.parse(localStorage.getItem('FCParray')) || []);
+    setLcpArray(JSON.parse(localStorage.getItem('LCParray')) || []);
+    setClsArray(JSON.parse(localStorage.getItem('CLSarray')) || []);
+    setFidArray(JSON.parse(localStorage.getItem('FIDarray')) || []);
+  }, []);
 
-      let newFCPArray;
-      if(fcpArray){
-        newFCPArray = [...fcpArray, fcp];
-      } else {
-        newFCPArray = [fcp];
-      }
+  const FCPindex = Math.ceil(fcpArray.length*0.75);
+  const FCP75 = fcpArray.sort((a,b)=> a-b)[FCPindex];
 
- localStorage.setItem('FCParray', JSON.stringify(newFCPArray.sort((a,b)=> a-b)));
+//   //FCP CREATOR
+//   const fcp = Math.round(JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).fcp.value)
+//   console.log('test',fcp)
+
+//   const fcpArray = JSON.parse(localStorage.getItem('FCParray'));
+
+//       let newFCPArray;
+//       if(fcpArray){
+//         newFCPArray = [...fcpArray, fcp];
+//       } else {
+//         newFCPArray = [fcp];
+//       }
+
+//  localStorage.setItem('FCParray', JSON.stringify(newFCPArray.sort((a,b)=> a-b)));
 
 
- const FCPindex = Math.ceil(fcpArray.length*0.75);
- const FCP75 = newFCPArray.sort((a,b)=> a-b)[FCPindex]
+//  const FCPindex = Math.ceil(fcpArray.length*0.75);
+//  const FCP75 = newFCPArray.sort((a,b)=> a-b)[FCPindex]
 
-  // LCP CREATOR
-  const lcp = Math.round(JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).lcp.value)
-  console.log('test',lcp)
+//   // LCP CREATOR
+//   const lcp = Math.round(JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).lcp.value)
+//   console.log('test',lcp)
 
-  const lcpArray = JSON.parse(localStorage.getItem('LCParray'));
+//   const lcpArray = JSON.parse(localStorage.getItem('LCParray'));
 
-      let newLCPArray;
-      if(lcpArray){
-        newLCPArray = [...lcpArray, lcp];
-      } else {
-        newLCPArray = [lcp];
-      }
+//       let newLCPArray;
+//       if(lcpArray){
+//         newLCPArray = [...lcpArray, lcp];
+//       } else {
+//         newLCPArray = [lcp];
+//       }
 
- localStorage.setItem('LCParray', JSON.stringify(newLCPArray.sort((a,b)=> a-b)));
+//  localStorage.setItem('LCParray', JSON.stringify(newLCPArray.sort((a,b)=> a-b)));
 
- const LCPindex = Math.ceil(lcpArray.length*0.75);
- const LCP75 = newLCPArray.sort((a,b)=> a-b)[LCPindex]
+//  const LCPindex = Math.ceil(lcpArray.length*0.75);
+//  const LCP75 = newLCPArray.sort((a,b)=> a-b)[LCPindex]
 
-  // CLS CREATOR
-  const cls = JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).cls.value
-  console.log('test',cls)
+//   // CLS CREATOR
+//   const cls = JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).cls.value
+//   console.log('test',cls)
 
-  const clsArray = JSON.parse(localStorage.getItem('CLSarray'));
+//   const clsArray = JSON.parse(localStorage.getItem('CLSarray'));
 
-      let newCLSArray;
-      if(clsArray){
-        newCLSArray = [...clsArray, cls];
-      } else {
-        newCLSArray = [cls];
-      }
+//       let newCLSArray;
+//       if(clsArray){
+//         newCLSArray = [...clsArray, cls];
+//       } else {
+//         newCLSArray = [cls];
+//       }
 
- localStorage.setItem('CLSarray', JSON.stringify(newCLSArray.sort((a,b)=> a-b)));
+//  localStorage.setItem('CLSarray', JSON.stringify(newCLSArray.sort((a,b)=> a-b)));
 
-  const CLSindex = Math.ceil(clsArray.length*0.75);
-  const CLS75 = (newCLSArray.sort((a,b)=> a-b)[CLSindex]).toFixed(3)
+//   const CLSindex = Math.ceil(clsArray.length*0.75);
+//   const CLS75 = (newCLSArray.sort((a,b)=> a-b)[CLSindex]).toFixed(3)
 
-   // FID CREATOR
-   const fid = JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).fid.value
-   console.log('test',fid)
+//    // FID CREATOR
+//    const fid = JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).fid.value
+//    console.log('test',fid)
  
-   const fidArray = JSON.parse(localStorage.getItem('FIDarray'));
+//    const fidArray = JSON.parse(localStorage.getItem('FIDarray'));
  
-       let newFIDArray;
-       if(fidArray){
-         newFIDArray = [...fidArray, fid];
-       } else {
-         newFIDArray = [fid];
-       }
+//        let newFIDArray;
+//        if(fidArray){
+//          newFIDArray = [...fidArray, fid];
+//        } else {
+//          newFIDArray = [fid];
+//        }
  
-  localStorage.setItem('FIDarray', JSON.stringify(newFIDArray.sort((a,b)=> a-b)));
+//   localStorage.setItem('FIDarray', JSON.stringify(newFIDArray.sort((a,b)=> a-b)));
 
 
-  const FIDindex = Math.ceil(fidArray.length*0.75);
-  const FID75 = (newFIDArray.sort((a,b)=> a-b)[FIDindex]).toFixed(2)
+//   const FIDindex = Math.ceil(fidArray.length*0.75);
+//   const FID75 = (newFIDArray.sort((a,b)=> a-b)[FIDindex]).toFixed(2)
 
-  console.log('test in nextar dash');
+//   console.log('test in nextar dash');
 
+// ------------------------------------------
   // const [fid, setFID] = useState(0);
   // const [LCP, setLCP] = useState(0);
   // const [lcpArray, setLcpArray] = useState([]);
@@ -139,12 +160,20 @@ export default function Nextar() {
   //    }).observe({ type: 'layout-shift', buffered: true });
   //   }, []);
 
+  //       <LineChart FCP75={FCP75} LCP75={LCP75} CLS75={CLS75} FID75={FID75}/>
+  //      <h2>WEB VITALS</h2>
+  // <LineChart data={FCP75} />
+
+  // <Webvitals />
   return (
     <main>
       <h1>Nextar Dashboard</h1>
-      <h2>WEB VITALS</h2>
-      <LineChart FCP75={FCP75} LCP75={LCP75} CLS75={CLS75} FID75={FID75}/>
-      
+      <p>{fcpArray}</p>
+      {/* <p>{FCP75}</p> */}
+      <CreateGraph array={fcpArray}/>
+
+       
+
       
 <h2>SERVER NETWORK ACTIVITY</h2>
 <table className='table auto sml-6 mr-6 flex flex-wrap'>
