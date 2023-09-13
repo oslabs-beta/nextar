@@ -30,13 +30,18 @@ export default function Nextar() {
     setWvObj(JSON.parse(localStorage.getItem('nextar-web-vitals')));
   };
 
+  const clearLS = () => {
+    localStorage.setItem('nextar-web-vitals', JSON.stringify({}));
+    setWvObj(JSON.parse(localStorage.getItem('nextar-web-vitals')));
+  };
+
   const [value, setValue] = useState('/');
   const handleChange = (event) => {
     setValue(event.target.value);
   };
-  const endpoints = Object.keys(wvObj).filter(
-    (endpoint) => endpoint !== '/nextar'
-  );
+  const endpoints = Object.keys(wvObj)
+    .filter((endpoint) => endpoint !== '/nextar')
+    .sort();
 
   // // get all options for endpoints
   const options = [];
@@ -46,8 +51,31 @@ export default function Nextar() {
 
   //get arrays from object
   if (!wvObj[value]) {
-    return;
+    return (
+      <main className={montserrat.className}>
+        <div style={{ display: 'flex' }}>
+          <Image
+            src={Logo}
+            alt='Nextar Logo'
+            width={88}
+            quality={100}
+            // placeholder='blur'
+          />
+          <h1>Web Vitals Dashboard</h1>
+        </div>
+        <br />
+        <div style={{ display: 'flex', marginLeft: '10px' }}>
+          Endpoint:&emsp;
+          <select value={value} onChange={handleChange}>
+            {options}
+          </select>
+          &emsp;
+          <button onClick={() => clearLS()}>Clear Local Storage</button>
+        </div>
+      </main>
+    );
   }
+
   const fcp = wvObj[value].fcp;
   const lcp = wvObj[value].lcp;
   const fid = wvObj[value].fid;
@@ -87,6 +115,8 @@ export default function Nextar() {
         <select value={value} onChange={handleChange}>
           {options}
         </select>
+        &emsp;
+        <button onClick={() => clearLS()}>Clear Local Storage</button>
       </div>
 
       <br />
@@ -120,29 +150,6 @@ export default function Nextar() {
           </div>
         </div>
       </div>
-      <h2>SERVER NETWORK ACTIVITY</h2>
-      <table className='table auto sml-6 mr-6 flex flex-wrap'>
-        {/* head */}
-        <thead className='text-sm '>
-          <tr className='sticky'>
-            <th className='sticky'>Endpoint</th>
-            <th className='sticky'>Type of Request</th>
-            <th className='sticky'>Response Status</th>
-            <th className='sticky'>Response Size</th>
-            <th className='sticky'>Start Time</th>
-            <th className='sticky'>Duration</th>
-            <th>__</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-        </tbody>
-      </table>
     </main>
   );
 }
