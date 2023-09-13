@@ -1,14 +1,7 @@
 'use client'
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper'
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import Box from '@mui/material/Box'
+import { MaterialReactTable } from 'material-react-table'
 
 const socketURL = 'ws://localhost:8000';
 
@@ -18,6 +11,7 @@ const Dashboard = () => {
   const firstStartTime = useRef(null);
   const lastEndTime = useRef(null);
   const totalDuration = useRef(0);
+  const colors = ['green', 'yellow', 'red', 'gray']
 
   const handleSocket = useCallback(() => {
     const socket = new WebSocket(socketURL);
@@ -49,12 +43,24 @@ const Dashboard = () => {
 
         console.log('start time', row.startTime, 'row duration', row.duration, 'total duration', totalDuration.current)
 
-        row.coords = []
-        const marginLeft = (row.startTime / totalDuration.current) * 100
-        const width = (row.duration / totalDuration.current) * 100
-        row.coords.push(marginLeft, width)
+        row.bgColor = ''
 
-        console.log(row.coords)
+        if (row.status >= 200 && row.status <= 299) {
+          row.bgColor = 'green'
+        } else if (row.status >= 300 && row.status <= 399) {
+          row.bgColor = 'orange'
+        } else if (row.status >= 400 && row.status <= 599) {
+          row.bgColor = 'red'
+        } else {
+          row.bgColor = 'gray'
+        }
+
+        const mLeft = (row.startTime / totalDuration.current) * 100
+        const boxWidth = (row.duration / totalDuration.current) * 100
+
+        row.waterfallBlock = <Box sx={{marginLeft:`${mLeft}%`, width:`${boxWidth}%`, backgroundColor: row.bgColor, color:'transparent'}}>|</Box>
+
+        console.log(row.waterfallBlock)
 
         newRows.push(row)
       }
@@ -68,39 +74,55 @@ const Dashboard = () => {
     handleSocket();
   }, []);
 
+  const columns = useMemo(() => [
+    { 
+      accessorKey: 'endpoint', 
+      header: 'Endpoint',
+      size: 100, 
+    },
+    {
+      accessorKey: 'source',
+      header: 'Source',
+      size: 30,
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      size: 30,
+    },
+    {
+      accessorKey: 'method',
+      header: 'Method',
+      size: 30,
+    },
+    {
+      accessorKey: 'startTime',
+      header: 'Start Time (ms)',
+      size: 30,
+    },
+    {
+      accessorKey: 'duration',
+      header: 'Duration (ms)',
+      size: 30,
+    },
+    {
+      accessorKey: 'waterfallBlock',
+      header: 'Waterfall',
+      size: 250
+    }
+  ], [],)
+
   return (
-    <div>
-          <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Endpoint</TableCell>
-                <TableCell>Source</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Method</TableCell>
-                <TableCell>Start Time</TableCell>
-                <TableCell>Duration(ms)</TableCell>
-                <TableCell>Waterfall</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell component="th" scope="row">{row.endpoint}</TableCell>
-                  <TableCell>{row.source}</TableCell>
-                  <TableCell>{row.status}</TableCell>
-                  <TableCell>{row.method}</TableCell>
-                  <TableCell>{row.startTime}</TableCell>
-                  <TableCell>{row.duration}</TableCell>
-                  <TableCell>
-                    <div style={{visibility:'visible', marginLeft:`${row.coords[0]}%`, width:`${row.coords[1]}%`, height: '50%', color:'transparent', backgroundColor:'blue'}}>|</div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-    </div>
+    <MaterialReactTable 
+      columns={columns}
+      data={rows}
+      defaultColumn={{
+        maxSize: 500,
+        minSize: 15,
+      }}
+      enableColumnResizing
+      columnResizeMode="onChange" 
+    />
   );
 }
 
