@@ -5,6 +5,14 @@ import Link from 'next/link';
 import Pic from '../../public/next.svg';
 import CreateGraph from '@components/CreateGraph';
 import { useEffect, useState } from 'react';
+import Image from 'next/image'; //review the image documentation
+import Logo from '@components/nextar-logo-text-yellow.png';
+import { Montserrat } from 'next/font/google';
+
+const montserrat = Montserrat({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 export default function Nextar() {
   const [wvObj, setWvObj] = useState({});
@@ -62,11 +70,24 @@ export default function Nextar() {
   const CLS75 = sortedLcp.sort((a, b) => a - b)[CLSindex];
 
   return (
-    <main>
-      <h1>Nextar Dashboard</h1>
-      <select value={value} onChange={handleChange}>
-        {options}
-      </select>
+    <main className={montserrat.className}>
+      <div style={{ display: 'flex' }}>
+        <Image
+          src={Logo}
+          alt='Nextar Logo'
+          width={88}
+          quality={100}
+          // placeholder='blur'
+        />
+        <h1>Web Vitals Dashboard</h1>
+      </div>
+      <br />
+      <div style={{ display: 'flex', marginLeft: '10px' }}>
+        Endpoint:&emsp;
+        <select value={value} onChange={handleChange}>
+          {options}
+        </select>
+      </div>
 
       <br />
       <div
