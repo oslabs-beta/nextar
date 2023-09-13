@@ -3,178 +3,101 @@
 import Link from 'next/link'
 // import {performance, PerformanceObserver} from 'perf_hooks';
 import Pic from '../../public/next.svg'
-import Image from 'next/image'
-// import { useState, useEffect, useRef } from "react";
-// import LineChart from '@components/LineChart'
 import CreateGraph from '@components/CreateGraph'
-// import Webvitals from '@components/Web-Vitals'
 import { useEffect, useState } from 'react'
 
 export default function Nextar() {
 
-  const [fcpArray, setFcpArray] = useState([]);
-  const [lcpArray, setLcpArray] = useState([]);
-  const [clsArray, setClsArray] = useState([]);
-  const [fidArray, setFidArray] = useState([]);
+  // const [fcpArray, setFcpArray] = useState([]);
+  // const [lcpArray, setLcpArray] = useState([]);
+  // const [clsArray, setClsArray] = useState([]);
+  // const [fidArray, setFidArray] = useState([]);
+  const [wvObj, setWvObj] = useState({});
 
   useEffect(() => {
     // thoughts: combine these all as one big metric object with the different web vitals as keys
     // add in the special next.js web vitals
-    setFcpArray(JSON.parse(localStorage.getItem('FCParray')) || []);
-    setLcpArray(JSON.parse(localStorage.getItem('LCParray')) || []);
-    setClsArray(JSON.parse(localStorage.getItem('CLSarray')) || []);
-    setFidArray(JSON.parse(localStorage.getItem('FIDarray')) || []);
+    // setFcpArray(JSON.parse(localStorage.getItem('FCParray')) || []);
+    // setLcpArray(JSON.parse(localStorage.getItem('LCParray')) || []);
+    // setClsArray(JSON.parse(localStorage.getItem('CLSarray')) || []);
+    // setFidArray(JSON.parse(localStorage.getItem('FIDarray')) || []);
+
+      // get all options for endpoints
+    setWvObj(JSON.parse(localStorage.getItem('nextar-web-vitals')));
+
   }, []);
 
-  const FCPindex = Math.ceil(fcpArray.length*0.75);
-  const FCP75 = fcpArray.sort((a,b)=> a-b)[FCPindex];
+  const [value, setValue] = useState('/');
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+  const endpoints = Object.keys(wvObj).filter((endpoint) => endpoint !== '/nextar')
 
-//   //FCP CREATOR
-//   const fcp = Math.round(JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).fcp.value)
-//   console.log('test',fcp)
+  // // get all options for endpoints
+  const options = [];
+  endpoints.forEach(element => {
+    options.push(
+      <option value={element}>{element}</option>
+    )
+  })
 
-//   const fcpArray = JSON.parse(localStorage.getItem('FCParray'));
-
-//       let newFCPArray;
-//       if(fcpArray){
-//         newFCPArray = [...fcpArray, fcp];
-//       } else {
-//         newFCPArray = [fcp];
-//       }
-
-//  localStorage.setItem('FCParray', JSON.stringify(newFCPArray.sort((a,b)=> a-b)));
-
-
-//  const FCPindex = Math.ceil(fcpArray.length*0.75);
-//  const FCP75 = newFCPArray.sort((a,b)=> a-b)[FCPindex]
-
-//   // LCP CREATOR
-//   const lcp = Math.round(JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).lcp.value)
-//   console.log('test',lcp)
-
-//   const lcpArray = JSON.parse(localStorage.getItem('LCParray'));
-
-//       let newLCPArray;
-//       if(lcpArray){
-//         newLCPArray = [...lcpArray, lcp];
-//       } else {
-//         newLCPArray = [lcp];
-//       }
-
-//  localStorage.setItem('LCParray', JSON.stringify(newLCPArray.sort((a,b)=> a-b)));
-
-//  const LCPindex = Math.ceil(lcpArray.length*0.75);
-//  const LCP75 = newLCPArray.sort((a,b)=> a-b)[LCPindex]
-
-//   // CLS CREATOR
-//   const cls = JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).cls.value
-//   console.log('test',cls)
-
-//   const clsArray = JSON.parse(localStorage.getItem('CLSarray'));
-
-//       let newCLSArray;
-//       if(clsArray){
-//         newCLSArray = [...clsArray, cls];
-//       } else {
-//         newCLSArray = [cls];
-//       }
-
-//  localStorage.setItem('CLSarray', JSON.stringify(newCLSArray.sort((a,b)=> a-b)));
-
-//   const CLSindex = Math.ceil(clsArray.length*0.75);
-//   const CLS75 = (newCLSArray.sort((a,b)=> a-b)[CLSindex]).toFixed(3)
-
-//    // FID CREATOR
-//    const fid = JSON.parse(localStorage.getItem('web-vitals-extension-metrics')).fid.value
-//    console.log('test',fid)
- 
-//    const fidArray = JSON.parse(localStorage.getItem('FIDarray'));
- 
-//        let newFIDArray;
-//        if(fidArray){
-//          newFIDArray = [...fidArray, fid];
-//        } else {
-//          newFIDArray = [fid];
-//        }
- 
-//   localStorage.setItem('FIDarray', JSON.stringify(newFIDArray.sort((a,b)=> a-b)));
+  //get arrays from object
+  if(!wvObj[value]){
+    return;
+  }
+  const fcp = wvObj[value].fcp;
+  const lcp = wvObj[value].lcp;
+  const fid = wvObj[value].fid;
+  const cls = wvObj[value].cls;
 
 
-//   const FIDindex = Math.ceil(fidArray.length*0.75);
-//   const FID75 = (newFIDArray.sort((a,b)=> a-b)[FIDindex]).toFixed(2)
+  const FCPindex = Math.ceil((fcp.length-1)*0.75);
+  const sortedFcp = [...fcp];
+  const FCP75 = sortedFcp.sort((a,b)=> a-b)[FCPindex];
 
-//   console.log('test in nextar dash');
+  const LCPindex = Math.ceil((lcp.length-1)*0.75);
+  const sortedLcp = [...lcp];
+  const LCP75 = sortedLcp.sort((a,b)=> a-b)[LCPindex];
 
-// ------------------------------------------
-  // const [fid, setFID] = useState(0);
-  // const [LCP, setLCP] = useState(0);
-  // const [lcpArray, setLcpArray] = useState([]);
-  // const [CLS, setCLS] = useState(0);
-  // let clsArray = [];
+  const FIDindex = Math.ceil((fid.length-1)*0.75);
+  const sortedFid = [...fid];
+  const FID75 = sortedFid.sort((a,b)=> a-b)[FIDindex];
 
-  // useEffect(() => {
-  //   //LCP
-  //  new PerformanceObserver((entryList) => {
-  //     const entry = +(entryList.getEntries()[0].renderTime/1000).toFixed(3);
-  //     setLCP(entry);
+  const CLSindex = Math.ceil((cls.length-1)*0.75);
+  const sortedCls = [...cls];
+  const CLS75 = sortedLcp.sort((a,b)=> a-b)[CLSindex];
 
-  //     const myArray = JSON.parse(localStorage.getItem('LCP array'));
-
-  //     let newLCPArray;
-  //     if(myArray){
-  //       newLCPArray = [...myArray, entry];
-  //     } else {
-  //       newLCPArray = [entry];
-  //     }
-
-  //     setLcpArray(newLCPArray);
-    
-  //     localStorage.setItem('LCP array', JSON.stringify(newLCPArray));
-  //  }).observe({ type: "largest-contentful-paint", buffered: true });
-
-  //     // FID
-  //   new PerformanceObserver((entryList) => {
-  //      setFID(
-  //        entryList.getEntries()[0].processingStart -
-  //          entryList.getEntries()[0].startTime
-  //      );
-  //      localStorage.setItem('fid', Math.round(fid * 10) / 10);
-  //    }).observe({ type: 'first-input', buffered: true });
-
-
-  //    // CLS
-  //    new PerformanceObserver((entryList) => {
-  //      const entry = +entryList.getEntries()[0].value.toFixed(4);
-  //      setCLS(entry);
-
-  //      const clsArray = JSON.parse(localStorage.getItem('CLS array'));
-
-  //     let newCLSArray;
-  //     if(clsArray){
-  //       newCLSArray = [...clsArray, entry];
-  //     } else {
-  //       newCLSArray = [entry];
-  //     }
-
-  //     localStorage.setItem('CLS array', JSON.stringify(newCLSArray));
-  //    }).observe({ type: 'layout-shift', buffered: true });
-  //   }, []);
-
-  //       <LineChart FCP75={FCP75} LCP75={LCP75} CLS75={CLS75} FID75={FID75}/>
-  //      <h2>WEB VITALS</h2>
-  // <LineChart data={FCP75} />
-
-  // <Webvitals />
   return (
     <main>
       <h1>Nextar Dashboard</h1>
-      <p>{fcpArray}</p>
-      {/* <p>{FCP75}</p> */}
-      <CreateGraph array={fcpArray}/>
+      <select value={value} onChange={handleChange}>
+        {options}
+      </select>
 
-       
-
-      
+      <br/>
+      <div className='webvitals' style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
+        <div>
+          <div>
+            <h2>First Contentful Paint (FCP): {FCP75}</h2>
+            <CreateGraph array={fcp}/>
+          </div>
+          <div>
+            <h2>Largest Contentful Paint (LCP): {LCP75}</h2>
+            <CreateGraph array={lcp}/>
+          </div>
+        </div>
+        <br/>
+        <div>
+          <div>
+            <h2>First Input Delay (FID): {FID75}</h2>
+            <CreateGraph array={fid}/>
+          </div>
+          <div>
+            <h2>Cumulative Layout Shift(CLS): {CLS75}</h2>
+            <CreateGraph array={cls}/>
+          </div>
+        </div>
+      </div>      
 <h2>SERVER NETWORK ACTIVITY</h2>
 <table className='table auto sml-6 mr-6 flex flex-wrap'>
           {/* head */}
@@ -201,30 +124,3 @@ export default function Nextar() {
     </main>
   )
 }
-
-
-// <div className="card h-full w-full bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100">
-// <h3>FCP</h3>
-// <p>{FCP75}</p>
-// </div>
-
-// <div className="card">
-// <h3>LCP</h3>
-// {/* <p>{LCP} s</p> */}
-// </div>
-
-// <div className="card">
-// <h3>CLS</h3>
-// {/* <p>{CLS}</p> */}
-// </div>
-
-// <div className="card">
-// <h3>FID</h3>
-// {/* <p>{fid.toFixed(3)} ms</p> */}
-// </div>
-
-// <div className="flex justify-center my-8">
-// <Link href="/tickets">
-//   <button className="btn-primary">View Tickets</button>
-// </Link>
-// </div>
