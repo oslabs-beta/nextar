@@ -1,34 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Nextar ![Version](https://img.shields.io/badge/version-1.0.0-blue)  
+Nextar is an open-source developer tool for Next.js developers to provide server-side network request metrics along with detailed charts on Google's [core web vitals](https://web.dev/metrics/), in order to assist with development when working with server side rendered components.
 
-## Getting Started
+_Note: Nextar is only compatible with versions of Next.js 13 and above_
 
-First, run the development server:
+## Table of Contents
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Additional Information](#additional-information)
+- [Authors](#authors)
+- [Tech Stack](#tech)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## <a name="features"></a>Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+<b>Nextar</b> provides two dashboards:
+- Server Side Activity (Endpoint, Type of Request, Response Status, Response Size, Start Time, Duration) with waterfall view
+- Web Vitals (FCP, LCP, CLS, FID)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## <a name="getting-started"></a>Getting Started
+1. In your terminal, install the Nextar NPM package  
+    ```
+    npm install nextarjs
+    ```
+3. Run the following to create the Nextar files  
+     ```
+     npx nextar-create
+     ```
+5. In your package.json, add the following to scipts:  
+     ```
+   "nextar": "node --require ./server/server.js & next dev",
+     ```
+7. in your terminal run the following command:  
+     ```
+   npm run nextar
+     ```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## <a name="usage"></a>Usage
+Insert gifs here...
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## <a name="additional-information"></a>Additional Information
+FID will be replaced with NIS in March 2024.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## <a name="authors"></a> Authors
+#### Amulya Uppala | [Github](https://github.com/amoomoo) | [LinkedIn](https://www.linkedin.com/in/amulya-uppala/)
+#### Andrew Lee | [Github](https://github.com/anwle115) | [LinkedIn](https://www.linkedin.com/in/andrew-w-lee/)
+#### Isabelle Ro | [Github](https://github.com/isabellero1) | [LinkedIn](https://www.linkedin.com/in/isabelle-ro-25b009230/)
+#### Julia Shi | [Github](https://github.com/juliajshi) | [LinkedIn](https://www.linkedin.com/in/juliacshi/)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## <a name="tech"></a> Tech Stack
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![NPM](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![WebSocket](https://img.shields.io/badge/WS-Websocket-2ea44f?style=for-the-badge&logo=appveyor)
+![MUI](https://img.shields.io/badge/Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white)
+![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-3d348b?style=for-the-badge&logo=opentelemetry&logoColor=white)
+![d3js](https://img.shields.io/badge/d3-red?style=for-the-badge&logo=d3.js)
+![Webpack](https://img.shields.io/badge/webpack-%238DD6F9.svg?style=for-the-badge&logo=webpack&logoColor=black)
