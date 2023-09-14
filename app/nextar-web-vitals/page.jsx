@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-// import {performance, PerformanceObserver} from 'perf_hooks';
 import Pic from '../../public/next.svg';
 import CreateGraph from '@components/CreateGraph';
 import NewGraph from '@components/NewGraph';
@@ -29,9 +28,6 @@ export default function Nextar() {
   const [wvObj, setWvObj] = useState({});
 
   useEffect(() => {
-    // thoughts: combine these all as one big metric object with the different web vitals as keys
-    // add in the special next.js web vitals
-
     // get all options for endpoints
     setWvObj(JSON.parse(localStorage.getItem('nextar-web-vitals')));
   }, []);
@@ -50,8 +46,10 @@ export default function Nextar() {
   const handleChange = (event) => {
     setValue(event.target.value);
   };
+  
   const endpoints = Object.keys(wvObj)
-    .filter((endpoint) => endpoint !== '/nextar')
+    .filter((endpoint) =>(endpoint !== '/nextar-dashboard'))
+    .filter((endpoint) =>(endpoint !== '/nextar-web-vitals'))
     .sort();
 
   // // get all options for endpoints
