@@ -16,6 +16,45 @@ const montserrat = Montserrat({
 });
 
 export default function Nextar() {
+  const goodTag = (
+    <p
+      style={{
+        color: 'green',
+        backgroundColor: '#57e96466',
+        padding: '4px',
+        border: 'solid green 1px',
+      }}
+    >
+      Good
+    </p>
+  );
+
+  const niTag = (
+    <p
+      style={{
+        color: '#e1ad01 ',
+        backgroundColor: '#FFFF0066',
+        padding: '4px',
+        border: 'solid #F6BE00 1px',
+      }}
+    >
+      Needs Improvement
+    </p>
+  );
+
+  const poorTag = (
+    <p
+      style={{
+        color: 'red ',
+        backgroundColor: '#fad1d0',
+        padding: '4px',
+        border: 'solid red 1px',
+      }}
+    >
+      Poor
+    </p>
+  );
+
   const thresholds = {
     fcp: { ni: 1800, poor: 3000, unit: 'ms' },
     lcp: { ni: 2500, poor: 4000, unit: 'ms' },
@@ -153,6 +192,9 @@ export default function Nextar() {
             marginLeft: '10px',
             marginTop: '10px',
             fontSize: '1.4rem',
+            padding: '10px',
+            backgroundColor: 'rgb(247, 218, 33)',
+            opacity: '.8',
           }}
         >
           Endpoint:&emsp;
@@ -168,7 +210,13 @@ export default function Nextar() {
           <button
             onClick={() => clearLS()}
             className={montserrat.className}
-            style={{ fontSize: '1.1rem' }}
+            style={{
+              fontSize: '.9rem',
+              // border: 'solid #E1C237 1px',
+              borderRadius: '25px',
+              backgroundColor: 'black',
+              color: 'white',
+            }}
           >
             Clear Local Storage
           </button>
@@ -192,12 +240,29 @@ export default function Nextar() {
         >
           <div>
             <h3>Largest Contentful Paint (LCP)</h3>
-            <h4>
-              75th Percentile: {LCP75} {thresholds.lcp.unit}
-            </h4>
-            <h4>
-              Most Recent: {lcp[lcp.length - 1]} {thresholds.lcp.unit}
-            </h4>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                75th Percentile: {LCP75} {thresholds.lcp.unit}
+              </h4>
+              &emsp;
+              {LCP75 < thresholds.lcp.ni ? goodTag : ''}
+              {LCP75 > thresholds.lcp.ni && LCP75 < thresholds.lcp.poor
+                ? niTag
+                : ''}
+              {LCP75 > thresholds.lcp.poor ? poorTag : ''}
+            </div>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                Most Recent: {lcp[lcp.length - 1]} {thresholds.lcp.unit}
+              </h4>
+              &emsp;
+              {lcp[lcp.length - 1] < thresholds.lcp.ni ? goodTag : ''}
+              {lcp[lcp.length - 1] > thresholds.lcp.ni &&
+              lcp[lcp.length - 1] < thresholds.lcp.poor
+                ? niTag
+                : ''}
+              {lcp[lcp.length - 1] > thresholds.lcp.poor ? poorTag : ''}
+            </div>
             <NewGraph
               array={lcp}
               ni={thresholds.lcp.ni}
@@ -206,12 +271,29 @@ export default function Nextar() {
           </div>
           <div>
             <h3>Cumulative Layout Shift (CLS)</h3>
-            <h4>
-              75th Percentile: {CLS75} {thresholds.cls.unit}
-            </h4>
-            <h4>
-              Most Recent: {cls[cls.length - 1]} {thresholds.cls.unit}
-            </h4>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                75th Percentile: {CLS75} {thresholds.cls.unit}
+              </h4>
+              &emsp;
+              {CLS75 < thresholds.cls.ni ? goodTag : ''}
+              {CLS75 > thresholds.cls.ni && CLS75 < thresholds.cls.poor
+                ? niTag
+                : ''}
+              {CLS75 > thresholds.cls.poor ? poorTag : ''}
+            </div>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                Most Recent: {cls[cls.length - 1]} {thresholds.cls.unit}
+              </h4>
+              &emsp;
+              {cls[cls.length - 1] < thresholds.cls.ni ? goodTag : ''}
+              {cls[cls.length - 1] > thresholds.cls.ni &&
+              cls[cls.length - 1] < thresholds.cls.poor
+                ? niTag
+                : ''}
+              {cls[cls.length - 1] > thresholds.cls.poor ? poorTag : ''}
+            </div>
             <NewGraph
               array={cls}
               ni={thresholds.cls.ni}
@@ -220,12 +302,29 @@ export default function Nextar() {
           </div>
           <div>
             <h3>First Input Delay (FID)</h3>
-            <h4>
-              75th Percentile: {FID75} {thresholds.fid.unit}
-            </h4>
-            <h4>
-              Most Recent: {fid[fid.length - 1]} {thresholds.fid.unit}
-            </h4>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                75th Percentile: {FID75} {thresholds.fid.unit}
+              </h4>
+              &emsp;
+              {FID75 < thresholds.fid.ni ? goodTag : ''}
+              {FID75 > thresholds.fid.ni && FID75 < thresholds.fid.poor
+                ? niTag
+                : ''}
+              {FID75 > thresholds.fid.poor ? poorTag : ''}
+            </div>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                Most Recent: {fid[fid.length - 1]} {thresholds.fid.unit}
+              </h4>
+              &emsp;
+              {fid[fid.length - 1] < thresholds.fid.ni ? goodTag : ''}
+              {fid[fid.length - 1] > thresholds.fid.ni &&
+              fid[fid.length - 1] < thresholds.fid.poor
+                ? niTag
+                : ''}
+              {fid[fid.length - 1] > thresholds.fid.poor ? poorTag : ''}
+            </div>
             <NewGraph
               array={fid}
               ni={thresholds.fid.ni}
@@ -252,12 +351,29 @@ export default function Nextar() {
         >
           <div>
             <h3>First Contentful Paint (FCP)</h3>
-            <h4>
-              75th Percentile: {FCP75} {thresholds.fcp.unit}
-            </h4>
-            <h4>
-              Most Recent: {fcp[fcp.length - 1]} {thresholds.fcp.unit}
-            </h4>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                75th Percentile: {FCP75} {thresholds.fcp.unit}
+              </h4>
+              &emsp;
+              {FCP75 < thresholds.fcp.ni ? goodTag : ''}
+              {FCP75 > thresholds.fcp.ni && FCP75 < thresholds.fcp.poor
+                ? niTag
+                : ''}
+              {FCP75 > thresholds.fcp.poor ? poorTag : ''}
+            </div>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                Most Recent: {fcp[fcp.length - 1]} {thresholds.fcp.unit}
+              </h4>
+              &emsp;
+              {fcp[fcp.length - 1] < thresholds.fcp.ni ? goodTag : ''}
+              {fcp[fcp.length - 1] > thresholds.fcp.ni &&
+              fcp[fcp.length - 1] < thresholds.fcp.poor
+                ? niTag
+                : ''}
+              {fcp[fcp.length - 1] > thresholds.fcp.poor ? poorTag : ''}
+            </div>
             <NewGraph
               array={fcp}
               ni={thresholds.fcp.ni}
@@ -266,12 +382,29 @@ export default function Nextar() {
           </div>
           <div>
             <h3>Interaction to Next Paint (INP)</h3>
-            <h4>
-              75th Percentile: {INP75} {thresholds.inp.unit}
-            </h4>
-            <h4>
-              Most Recent: {inp[inp.length - 1]} {thresholds.inp.unit}
-            </h4>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                75th Percentile: {INP75} {thresholds.inp.unit}
+              </h4>
+              &emsp;
+              {INP75 < thresholds.inp.ni ? goodTag : ''}
+              {INP75 > thresholds.inp.ni && INP75 < thresholds.inp.poor
+                ? niTag
+                : ''}
+              {INP75 > thresholds.inp.poor ? poorTag : ''}
+            </div>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                Most Recent: {inp[inp.length - 1]} {thresholds.inp.unit}
+              </h4>
+              &emsp;
+              {inp[inp.length - 1] < thresholds.inp.ni ? goodTag : ''}
+              {inp[inp.length - 1] > thresholds.inp.ni &&
+              inp[inp.length - 1] < thresholds.inp.poor
+                ? niTag
+                : ''}
+              {inp[inp.length - 1] > thresholds.inp.poor ? poorTag : ''}
+            </div>
             <NewGraph
               array={inp}
               ni={thresholds.inp.ni}
@@ -282,12 +415,29 @@ export default function Nextar() {
             <h3>
               Time To First Byte (TTFB): {TTFB75} {thresholds.ttfb.unit}
             </h3>
-            <h4>
-              75th Percentile: {TTFB75} {thresholds.ttfb.unit}
-            </h4>
-            <h4>
-              Most Recent: {ttfb[ttfb.length - 1]} {thresholds.ttfb.unit}
-            </h4>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                75th Percentile: {TTFB75} {thresholds.ttfb.unit}
+              </h4>
+              &emsp;
+              {TTFB75 < thresholds.ttfb.ni ? goodTag : ''}
+              {TTFB75 > thresholds.ttfb.ni && TTFB75 < thresholds.ttfb.poor
+                ? niTag
+                : ''}
+              {TTFB75 > thresholds.ttfb.poor ? poorTag : ''}
+            </div>
+            <div style={{ display: 'flex' }}>
+              <h4>
+                Most Recent: {ttfb[ttfb.length - 1]} {thresholds.ttfb.unit}
+              </h4>
+              &emsp;
+              {ttfb[ttfb.length - 1] < thresholds.ttfb.ni ? goodTag : ''}
+              {ttfb[ttfb.length - 1] > thresholds.ttfb.ni &&
+              ttfb[ttfb.length - 1] < thresholds.ttfb.poor
+                ? niTag
+                : ''}
+              {ttfb[ttfb.length - 1] > thresholds.ttfb.poor ? poorTag : ''}
+            </div>
             <NewGraph
               array={ttfb}
               ni={thresholds.ttfb.ni}
