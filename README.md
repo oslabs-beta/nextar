@@ -35,7 +35,9 @@ _Note: Nextar is only compatible with versions of Next.js 13 and above_
      ```
    npm run nextar
      ```
-
+Open your dashboards by going to your hosted website and navigating to the two dashboard endpoints:
+    http://localhost:3000/nextar-dashboard
+    http://localhost:3000/nextar
 
 ## <a name="usage"></a>Usage
 Insert gifs here...
