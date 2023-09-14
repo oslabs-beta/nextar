@@ -4,6 +4,7 @@ import Link from 'next/link';
 // import {performance, PerformanceObserver} from 'perf_hooks';
 import Pic from '../../public/next.svg';
 import CreateGraph from '@components/CreateGraph';
+import NewGraph from '@components/NewGraph';
 import { useEffect, useState } from 'react';
 import Image from 'next/image'; //review the image documentation
 import Logo from '@components/nextar-logo-text-yellow.png';
@@ -15,6 +16,16 @@ const montserrat = Montserrat({
 });
 
 export default function Nextar() {
+  const thresholds = {
+    fcp: { ni: 1800, poor: 3000, unit: 'ms' },
+    lcp: { ni: 2500, poor: 4000, unit: 'ms' },
+    cls: { ni: 0.1, poor: 0.25, unit: '' },
+    fid: { ni: 100, poor: 300, unit: 'ms' },
+    inp: { ni: 200, poor: 500, unit: 'ms' },
+    ttfb: { ni: 800, poor: 1800, unit: 'ms' },
+  };
+  console.log(thresholds);
+
   const [wvObj, setWvObj] = useState({});
 
   useEffect(() => {
@@ -70,7 +81,9 @@ export default function Nextar() {
             {options}
           </select>
           &emsp;
-          <button onClick={() => clearLS()}>Clear Local Storage</button>
+          <button onClick={() => clearLS()} className={montserrat.className}>
+            Clear Local Storage
+          </button>
         </div>
       </main>
     );
@@ -95,28 +108,47 @@ export default function Nextar() {
 
   const CLSindex = Math.ceil((cls.length - 1) * 0.75);
   const sortedCls = [...cls];
-  const CLS75 = sortedLcp.sort((a, b) => a - b)[CLSindex];
+  const CLS75 = sortedCls.sort((a, b) => a - b)[CLSindex];
 
   return (
-    <main className={montserrat.className}>
-      <div style={{ display: 'flex' }}>
-        <Image
-          src={Logo}
-          alt='Nextar Logo'
-          width={88}
-          quality={100}
-          // placeholder='blur'
-        />
-        <h1>Web Vitals Dashboard</h1>
-      </div>
-      <br />
-      <div style={{ display: 'flex', marginLeft: '10px' }}>
-        Endpoint:&emsp;
-        <select value={value} onChange={handleChange}>
-          {options}
-        </select>
-        &emsp;
-        <button onClick={() => clearLS()}>Clear Local Storage</button>
+    <main
+      className={montserrat.className}
+      style={{ backgroundColor: '#ffffea' }}
+    >
+      <div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '20px',
+            // position: 'fixed',
+          }}
+        >
+          <Image
+            src={Logo}
+            alt='Nextar Logo'
+            width={88}
+            quality={100}
+            // placeholder='blur'
+          />
+          <h1 style={{ fontWeight: 'bold' }}>Web Vitals Dashboard</h1>
+        </div>
+        <hr />
+        <br />
+        <div style={{ display: 'flex', marginLeft: '10px', marginTop: '10px' }}>
+          Endpoint:&emsp;
+          <select
+            value={value}
+            onChange={handleChange}
+            style={{ width: '200px' }}
+          >
+            {options}
+          </select>
+          &emsp;
+          <button onClick={() => clearLS()} className={montserrat.className}>
+            Clear Local Storage
+          </button>
+        </div>
       </div>
 
       <br />
@@ -124,30 +156,45 @@ export default function Nextar() {
         className='webvitals'
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          // flexDirection: 'row',
           justifyContent: 'space-around',
+          // background: 'blue',
+          flexWrap: 'wrap',
+          margin: '25px',
+          height: window.outerHeight,
         }}
       >
         <div>
-          <div>
-            <h2>First Contentful Paint (FCP): {FCP75}</h2>
-            <CreateGraph array={fcp} />
-          </div>
-          <div>
-            <h2>Largest Contentful Paint (LCP): {LCP75}</h2>
-            <CreateGraph array={lcp} />
-          </div>
+          <h5>First Contentful Paint (FCP): {FCP75} ms</h5>
+          <NewGraph
+            array={fcp}
+            ni={thresholds.fcp.ni}
+            poor={thresholds.fcp.poor}
+          />
         </div>
-        <br />
         <div>
-          <div>
-            <h2>First Input Delay (FID): {FID75}</h2>
-            <CreateGraph array={fid} />
-          </div>
-          <div>
-            <h2>Cumulative Layout Shift(CLS): {CLS75}</h2>
-            <CreateGraph array={cls} />
-          </div>
+          <h5>Largest Contentful Paint (LCP): {LCP75}</h5>
+          <NewGraph
+            array={lcp}
+            ni={thresholds.lcp.ni}
+            poor={thresholds.lcp.poor}
+          />
+        </div>
+        <div>
+          <h5>First Input Delay (FID): {FID75}</h5>
+          <NewGraph
+            array={fid}
+            ni={thresholds.fid.ni}
+            poor={thresholds.fid.poor}
+          />
+        </div>
+        <div>
+          <h5>Cumulative Layout Shift(CLS): {CLS75}</h5>
+          <NewGraph
+            array={cls}
+            ni={thresholds.cls.ni}
+            poor={thresholds.cls.poor}
+          />
         </div>
       </div>
     </main>
