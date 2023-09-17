@@ -135,7 +135,7 @@ export default function NewGraph(props) {
         .datum(needsImprov)
         .attr('class', 'area')
         .attr('d', areaNI)
-        .attr('fill', 'yellow')
+        .attr('fill', '#FFFF00')
         .attr('opacity', '.4');
 
       svg
