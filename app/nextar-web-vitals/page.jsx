@@ -90,7 +90,8 @@ export default function Nextar() {
     setValue(event.target.value);
   };
   const endpoints = Object.keys(wvObj)
-    .filter((endpoint) => endpoint !== '/nextar')
+    .filter((endpoint) => endpoint !== '/nextar-web-vitals')
+    .filter((endpoint) => endpoint !== '/nextar-dashboard')
     .sort();
 
   // // get all options for endpoints
@@ -102,27 +103,70 @@ export default function Nextar() {
   //get arrays from object
   if (!wvObj[value]) {
     return (
-      <main className={montserrat.className}>
-        <div style={{ display: 'flex' }}>
-          <Image
-            src={Logo}
-            alt='Nextar Logo'
-            width={88}
-            quality={100}
-            // placeholder='blur'
-          />
-          <h1>Web Vitals Dashboard</h1>
-        </div>
-        <br />
-        <div style={{ display: 'flex', marginLeft: '10px' }}>
-          Endpoint:&emsp;
-          <select value={value} onChange={handleChange}>
-            {options}
-          </select>
-          &emsp;
-          <button onClick={() => clearLS()} className={montserrat.className}>
-            Clear Local Storage
-          </button>
+      <main
+        className={montserrat.className}
+        style={{
+          backgroundColor: '#ffffea',
+          height: window.outerHeight + 500,
+        }}
+      >
+        <div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '20px',
+              // position: 'sticky',
+              // top: '0',
+              // backgroundColor: 'white'
+            }}
+          >
+            <Image
+              src={Logo}
+              alt='Nextar Logo'
+              width={88}
+              quality={100}
+              // placeholder='blur'
+            />
+            <h1>Web Vitals Dashboard</h1>
+          </div>
+          <hr />
+          <br />
+          <div
+            style={{
+              display: 'flex',
+              marginLeft: '10px',
+              marginTop: '10px',
+              fontSize: '1.4rem',
+              padding: '10px',
+              backgroundColor: 'rgb(247, 218, 33)',
+              opacity: '.8',
+            }}
+          >
+            Endpoint:&emsp;
+            <select
+              value={value}
+              onChange={handleChange}
+              style={{ width: '200px', fontSize: '1rem', padding: '1px' }}
+              className={montserrat.className}
+            >
+              {options}
+            </select>
+            &emsp; &emsp;
+            <button
+              onClick={() => clearLS()}
+              className={montserrat.className}
+              style={{
+                fontSize: '.9rem',
+                // border: 'solid #E1C237 1px',
+                borderRadius: '25px',
+                backgroundColor: 'black',
+                color: 'white',
+              }}
+            >
+              Reset Data
+            </button>
+          </div>
         </div>
       </main>
     );
@@ -162,7 +206,7 @@ export default function Nextar() {
   return (
     <main
       className={montserrat.className}
-      style={{ backgroundColor: '#ffffea', height: window.outerHeight }}
+      style={{ backgroundColor: '#ffffea', height: window.outerHeight + 500 }}
     >
       <div>
         <div
@@ -218,7 +262,7 @@ export default function Nextar() {
               color: 'white',
             }}
           >
-            Clear Local Storage
+            Reset Data
           </button>
         </div>
       </div>

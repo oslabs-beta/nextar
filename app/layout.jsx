@@ -1,24 +1,24 @@
-import './globals.css'
-import Navigation from '@components/Navigation.jsx'
-import { WebVitals } from '@components/Web-Vitals'
+import './globals.css';
+import Navigation from '@components/Navigation.jsx';
+import { WebVitals } from '@components/Web-Vitals';
 
 export const metadata = {
-  title: 'GLOBAL CITIZEN',
+  title: 'Global Citizen',
   description: 'Demo application for Nextar',
-}
+};
 
 const RootLayout = ({ children }) => {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body>
         <main>
           <WebVitals />
-          <Navigation />
+          {/* <Navigation /> */}
           {children}
         </main>
       </body>
     </html>
-  )
-}
+  );
+};
 
 export default RootLayout;
